@@ -27,4 +27,18 @@ describe Video do
     expect(video.category).to eq(new_category)
   end
 
+  it "if have title and description, should be valid" do
+    video = Video.create(title:"new video", description: "some details")
+    expect(Video.first).to eq(video)
+  end
+
+  it 'it has no either title or description ' do
+    video_1 = Video.create(title:"new video")
+    video_2 = Video.create(description: "some details")
+    video_1.valid?
+    video_2.valid?
+    expect(video_1.errors[:description].size).to eq(1)
+    expect(video_2.errors[:title].size).to eq(1)
+  end
+
 end

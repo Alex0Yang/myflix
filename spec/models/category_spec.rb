@@ -2,8 +2,8 @@ require "spec_helper"
 
 describe Category do
   let(:category) { Category.new(name: "TV Commedies") }
-  let(:video_1)  { Video.create(title: "video_1") }
-  let(:video_2)  { Video.create(title: "video_2") }
+  let(:video_1)  { Video.create(title: "video_1", description: "some details") }
+  let(:video_2)  { Video.create(title: "video_2", description: "some details") }
 
   context "When create a new category," do
     it "can save itself" do
