@@ -8,7 +8,7 @@
   = form_tag search_videos_path, method: :get, class: "col-md-5 navbar-form" do
     .form-group
       = text_field_tag "title", nil, placeholder:"Search for videos here", class:"form-control"
-    %button.btn.btn-default Search
+    %button.btn.btn-default(type="submit") Search
   #user_links.pull-right
     %ul
       %li.dropdown
