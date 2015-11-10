@@ -8,6 +8,7 @@ describe Category do
   describe "#recent_videos" do
     let!(:category_1) { Category.create(name:"category_1") }
     let!(:category_2) { Category.create(name:"category_2") }
+    let!(:category_3) { Category.create(name:"category_3") }
     let!(:video_1) { Video.create(title:"1_The Godfather",
                                   description:"some details",
                                   category: category_1,
@@ -55,6 +56,14 @@ describe Category do
 
     it "show vidoes by order by time" do
       expect(category_2.recent_videos).to eq([video_8, video_9])
+    end
+
+    it 'returns an empty array if the category dose not have any videos' do
+      expect(category_3.recent_videos.size).to eq(0)
+    end
+
+    it 'returns the most recent 6 videos' do
+      expect(category_1.recent_videos).not_to include(video_7)
     end
   end
 end
