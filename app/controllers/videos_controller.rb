@@ -1,4 +1,6 @@
 class VideosController < ApplicationController
+  before_action :user_auth
+
   def index
     @categories = Category.all
   end
