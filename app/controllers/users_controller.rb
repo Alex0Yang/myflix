@@ -8,7 +8,7 @@ class UsersController < ApplicationController
     @user = User.new(_permit_params)
 
     if @user.save
-      redirect_to videos_path
+      redirect_to sign_in_path, info: 'You are signed in, enjogy!'
     else
       render :new
     end

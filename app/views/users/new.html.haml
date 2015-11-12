@@ -5,8 +5,10 @@
         %header
           %h1 Register
           = f.alert_message "Please check your input below", error_summary: false
+        %fieldset
         = f.email_field :email, label: "Email Address"
         = f.password_field :password, label: "Password"
         = f.text_field :full_name, label: "Full Name"
-        = f.form_group do
-          = f.submit "Sign Up"
+        %fieldset
+          = f.form_group do
+            = f.submit "Sign Up"

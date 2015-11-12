@@ -1,8 +1,10 @@
 class SessionsController < ApplicationController
   def front
+    redirect_to videos_path if sign_in?
   end
 
   def new
+    redirect_to videos_path if sign_in?
   end
 
   def create
