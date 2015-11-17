@@ -1,10 +1,10 @@
 class SessionsController < ApplicationController
   def front
-    redirect_to videos_path if sign_in?
+    redirect_to videos_path if current_user
   end
 
   def new
-    redirect_to videos_path if sign_in?
+    redirect_to videos_path if current_user
   end
 
   def create
@@ -14,7 +14,7 @@ class SessionsController < ApplicationController
       session[:user_id] = user.id
       redirect_to videos_path
     else
-      flash[:danger] = "Incorrect email or password, Please try again"
+      flash.now[:danger] = "Incorrect email or password, Please try again"
       render :new
     end
   end

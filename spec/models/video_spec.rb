@@ -14,19 +14,27 @@ describe Video do
     should validate_presence_of(:description)
   end
 
-  describe '#self.search_by_title' do
-    let!(:video_1) { Video.create(title:"The Godfather",
-                                  description:"some details",
-                                  created_at: 1.day.ago) }
-    let!(:video_2) { Video.create(title:"The Godfather: Part II",
-                                  description:"some details",
-                                  created_at: 2.day.ago) }
-    let!(:video_3) { Video.create(title:"City of God",
-                                  description:"some details",
-                                  created_at: 3.day.ago) }
-    let!(:video_4) { Video.create(title:"Life Is Beautiful",
-                                  description:"some details",
-                                  created_at: 4.day.ago) }
+  describe '.search_by_title' do
+    let!(:video_1) do
+      Video.create(title:"The Godfather",
+                  description:"some details",
+                  created_at: 1.day.ago)
+    end
+    let!(:video_2) do
+      Video.create(title:"The Godfather: Part II",
+                   description:"some details",
+                   created_at: 2.day.ago)
+    end
+    let!(:video_3) do
+      Video.create(title:"City of God",
+                   description:"some details",
+                   created_at: 3.day.ago)
+    end
+    let!(:video_4) do
+      Video.create(title:"Life Is Beautiful",
+                   description:"some details",
+                   created_at: 4.day.ago)
+    end
 
     def search(search_terms)
       Video.search_by_title(search_terms)
