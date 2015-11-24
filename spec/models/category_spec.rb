@@ -6,65 +6,20 @@ describe Category do
   end
 
   describe "#recent_videos" do
-    let!(:category_1) { Category.create(name:"category_1") }
-    let!(:category_2) { Category.create(name:"category_2") }
-    let!(:category_3) { Category.create(name:"category_3") }
+    let!(:category_1) { Fabricate(:category) }
+    let!(:category_2) { Fabricate(:category) }
+    let!(:category_3) { Fabricate(:category) }
 
-    let!(:video_1) do
-      Video.create(title:"1_The Godfather",
-                   description:"some details",
-                   category: category_1,
-                   created_at: 1.day.ago)
-    end
+    let!(:video_1) { Fabricate(:video, category: category_1, created_at: 1.day.ago) }
 
-    let!(:video_2) do
-      Video.create(title:"2_The Godfather: Part II",
-                    description:"some details",
-                    category: category_1,
-                    created_at: 2.day.ago)
-    end
-    let!(:video_3) do
-      Video.create(title:"3_City of God",
-                    description:"some details",
-                    category: category_1,
-                    created_at: 3.day.ago)
-    end
-    let!(:video_4) do
-      Video.create(title:"4_Life Is Beautiful",
-                   description:"some details",
-                   category: category_1,
-                   created_at: 4.day.ago)
-    end
-    let!(:video_5) do
-      Video.create(title:"5_The Godfather",
-                   description:"some details",
-                   category: category_1,
-                   created_at: 5.day.ago)
-    end
-    let!(:video_6) do
-      Video.create(title:"6_The Godfather: Part II",
-                   category: category_1,
-                   description:"some details",
-                   created_at: 6.day.ago)
-    end
-    let!(:video_7) do
-      Video.create(title:"7_City of God",
-                    category: category_1,
-                    description:"some details",
-                    created_at: 7.day.ago)
-    end
-    let!(:video_8) do
-      Video.create(title:"8_Life Is Beautiful",
-                    description:"some details",
-                    category: category_2,
-                    created_at: 8.day.ago)
-    end
-    let!(:video_9) do
-      Video.create(title:"9_Life Is Beautiful",
-                    description:"some details",
-                    category: category_2,
-                    created_at: 9.day.ago)
-    end
+    let!(:video_2) { Fabricate(:video, category: category_1, created_at: 2.day.ago) }
+    let!(:video_3) { Fabricate(:video, category: category_1, created_at: 3.day.ago) }
+    let!(:video_4) { Fabricate(:video, category: category_1, created_at: 4.day.ago) }
+    let!(:video_5) { Fabricate(:video, category: category_1, created_at: 5.day.ago) }
+    let!(:video_6) { Fabricate(:video, category: category_1, created_at: 6.day.ago) }
+    let!(:video_7) { Fabricate(:video, category: category_1, created_at: 7.day.ago) }
+    let!(:video_8) { Fabricate(:video, category: category_2, created_at: 8.day.ago) }
+    let!(:video_9) { Fabricate(:video, category: category_2, created_at: 9.day.ago) }
 
     it "show all if nubmer less than six" do
       expect(category_2.recent_videos.size).to eq(2)

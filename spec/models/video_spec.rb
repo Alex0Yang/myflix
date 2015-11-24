@@ -16,23 +16,18 @@ describe Video do
 
   describe '.search_by_title' do
     let!(:video_1) do
-      Video.create(title:"The Godfather",
-                  description:"some details",
-                  created_at: 1.day.ago)
+      Fabricate(:video, title:"The Godfather", created_at: 1.day.ago)
     end
     let!(:video_2) do
-      Video.create(title:"The Godfather: Part II",
-                   description:"some details",
+      Fabricate(:video, title:"The Godfather: Part II",
                    created_at: 2.day.ago)
     end
     let!(:video_3) do
-      Video.create(title:"City of God",
-                   description:"some details",
+      Fabricate(:video, title:"City of God",
                    created_at: 3.day.ago)
     end
     let!(:video_4) do
-      Video.create(title:"Life Is Beautiful",
-                   description:"some details",
+      Fabricate(:video, title:"Life Is Beautiful",
                    created_at: 4.day.ago)
     end
 
