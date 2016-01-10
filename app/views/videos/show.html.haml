@@ -6,7 +6,7 @@
       .video_info.col-sm-3
         %header
           %h3= @video.title
-          %span Rating: 4.5/5.0
+          %span Rating: #{@video.average_rate}/5.0
         %p= @video.description
         .actions
           %a.btn.btn-primary(href="") Watch Now
@@ -15,34 +15,25 @@
 %section.reviews.container
   .row
     .col-sm-10.col-sm-offset-1
-      %form
-        %fieldset
-          .form-group
-            %label Rate this video
-            .row
-              .col-sm-3
-                %select.form-control(name="")
-                  %option(value="5") 5 Stars
-                  %option(value="4") 4 Stars
-                  %option(value="3") 3 Stars
-                  %option(value="2") 2 Stars
-                  %option(value="1") 1 Star
-          .form-group
-            %label Write Review
-            .row
-              .col-sm-8
-                %textarea.form-control(name="" rows="6")
-        %fieldset.form-group.actions.clearfix
-          %input(type="submit" value="Submit" class="btn")
-          %a(href="") Cancel
+      = bootstrap_form_for([@video, @comment], url: comment_video_path ) do |f|
+        = field_set_tag do
+          .row
+            .col-sm-3
+              = f.select :rate, (1..5).map { |n| [pluralize(n, "Star"), n]}.reverse, { label: "Rate this video"}
+          .row
+            .col-sm-8
+              = f.text_area :review, label: "Write Review", rows: "6"
+        = field_set_tag nil, class: "form-group actions clearfix" do
+          = f.submit "Submit", class: "btn"
+          = link_to "Cancel", @video
       %header
-        %h3 User Reviews (253)
+        %h3  User Reviews (#{@video.comments.count})
       %ul
-        - 8.times do
+        - @video.comments.each do |comment|
           %article.review
             %li.row
               .col-sm-2
-                %span Rating: 5 / 5
-                %p by <a href="">John A. Zoidberg</a>
+                %span  Rating: #{comment.rate} / 5
+                %p by <a href="">#{comment.user.full_name}</a>
               .col-sm-8
-                %p In my opinion, this is one of the best shows ever made. It's not only funny, but despite being so frequently silly, it's very smart as well. Math, science, history, all get referenced. The best parts of the show are the subtle things, those little things in the background or just on screen for a couple of seconds that just make you laugh out loud if you were paying attention. The writers even appear to have been thinking ahead, because if you play close attention to the first episode, you can see a literal shadow of an event revealed seasons later.
+                %p= comment.review

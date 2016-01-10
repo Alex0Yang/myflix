@@ -1,9 +1,7 @@
 require "spec_helper"
 
 describe Category do
-  it "can have many videos" do
-    should have_many(:videos)
-  end
+  it { should have_many(:videos) }
 
   describe "#recent_videos" do
     let!(:category_1) { Fabricate(:category) }

@@ -2,17 +2,13 @@ require "spec_helper"
 
 describe Video do
 
-  it "belongs to category" do
-    should belong_to(:category)
-  end
+  it { should belong_to(:category) }
 
-  it "have a title" do
-    should validate_presence_of(:title)
-  end
+  it { should validate_presence_of(:title) }
 
-  it "have description" do
-    should validate_presence_of(:description)
-  end
+  it { should have_many(:comments).order('created_at desc') }
+
+  it { should validate_presence_of(:description) }
 
   describe '.search_by_title' do
     let!(:video_1) do
@@ -53,6 +49,21 @@ describe Video do
 
     it 'returns an empty array for a search with an empty string' do
       expect(search("")).to be_empty
+    end
+  end
+
+  describe '.average_rage' do
+    it "return none if no rate" do
+      video = Fabricate(:video)
+      expect(video.average_rate).to eq("none")
+    end
+
+    it "return avg rate (float) if have some comments" do
+      video = Fabricate(:video)
+      6.times.each do |i|
+        Fabricate(:comment, rate: 2, video: video)
+      end
+      expect(video.average_rate).to eq(2.0)
     end
   end
 end
