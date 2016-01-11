@@ -72,7 +72,7 @@ describe SessionsController do
       post :destroy, user: user.id
     end
 
-    it "redirect to front page" do
+    it "redirect to sign in page" do
       expect(response).to redirect_to sign_in_path
     end
 

@@ -12,7 +12,8 @@ class SessionsController < ApplicationController
 
     if user && user.authenticate(params[:password])
       session[:user_id] = user.id
-      redirect_to videos_path, notice: "You are signed in, enjoy!"
+      flash[:success] = "You are signed in, enjoy!"
+      redirect_to videos_path
     else
       flash.now[:danger] = "Incorrect email or password, Please try again"
       render :new
@@ -24,6 +25,7 @@ class SessionsController < ApplicationController
       session[:user_id] = nil
     end
 
-    redirect_to sign_in_path, notice: "You are signed out, bye!"
+    flash[:success] = "You are signed out, bye!"
+    redirect_to sign_in_path
   end
 end

@@ -10,15 +10,15 @@ describe VideosController do
         get :show, { id: video.id }
       end
 
-      it "sets the @video variable for authenticated user" do
+      it "sets the @video variable" do
         expect(assigns(:video)).to eq(video)
       end
 
-      it "sets the @comment variable for authenticated user" do
+      it "sets the @comment variable" do
         expect(assigns(:comment)).to be_instance_of(Comment)
       end
 
-      it "gets the @video variable for authenticated user" do
+      it "gets the @video variable" do
         comment_1 = Fabricate(:comment, user_id: session[:user_id], video: video )
         comment_2 = Fabricate(:comment, user_id: session[:user_id], video: video )
         assigns(:video).comments.should =~ [comment_1, comment_2]
@@ -58,7 +58,7 @@ describe VideosController do
         expect(response).to redirect_to sign_in_path
       end
 
-      it "no video added" do
+      it "no video's comment added" do
         expect(video.comments.count).to eq(0)
       end
     end
