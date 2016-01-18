@@ -7,6 +7,7 @@ Myflix::Application.routes.draw do
   post '/sign_out', to:'sessions#destroy'
   get '/register', to:'users#new'
   resources :users, only: [:create]
+  get 'my_queue', to:"queue_items#index"
   resources :videos, only: [:index, :show] do
     get 'search', on: :collection
     post 'comment', on: :member
