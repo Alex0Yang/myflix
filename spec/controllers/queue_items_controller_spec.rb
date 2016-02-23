@@ -98,4 +98,26 @@ describe QueueItemsController do
       expect(response).to redirect_to sign_in_path
     end
   end
+  describe "POST update_queue" do
+    it "redirect to my queue page" do
+      session[:user_id] = Fabricate(:user).id
+      queue_item_1 = Fabricate(:queue_item)
+      post :update_queue, { queue_item: { queue_item_1.id => { position: queue_item_1.position } } }
+      expect(response).to redirect_to my_queue_path
+    end
+
+    it "update queue item position" do
+      session[:user_id] = Fabricate(:user).id
+      update_params = {}
+      update_params[:queue_item] = {}
+      5.times.each do |i|
+        item = Fabricate(:queue_item, position: 3)
+        update_params[:queue_item].merge!( { item.id => { position: 4 } } )
+      end
+      post :update_queue, update_params
+      expect(QueueItem.all.map(&:position)).to eq( [4] * 5 )
+    end
+
+    it "redirect to sign in page if unauth"
+  end
 end

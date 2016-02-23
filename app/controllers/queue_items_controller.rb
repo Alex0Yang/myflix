@@ -14,6 +14,10 @@ class QueueItemsController < ApplicationController
     QueueItem.where(user: current_user, id: params[:id]).first.try(:destroy)
     redirect_to my_queue_path
   end
+  def update_queue
+    QueueItem.update_queue(update_queue_params)
+    redirect_to my_queue_path
+  end
 
   private
 
@@ -27,5 +31,9 @@ class QueueItemsController < ApplicationController
 
   def new_queue_video_position
     current_user.queue_items.count + 1
+  end
+
+  def update_queue_params
+    params.require(:queue_item)
   end
 end

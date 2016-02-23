@@ -5,6 +5,7 @@ describe QueueItem do
   it { should belong_to(:video) }
   it { should validate_presence_of(:video) }
   it { should validate_presence_of(:user) }
+ # it { should validate_numericality_of(:position).only_integer }
 
   describe "#video_title" do
     it "returns the title of the video" do
@@ -48,5 +49,39 @@ describe QueueItem do
       queue_item = Fabricate(:queue_item, video: video)
       expect(queue_item.category).to eq(category)
     end
+  end
+
+  describe "#update_queue" do
+    it "update one recored" do
+      item = Fabricate(:queue_item, position: 3)
+      params = { item.id => { "position" => 4 }}
+      QueueItem.update_queue(params)
+      expect(item.reload.position).to eq(4)
+    end
+
+    it "update many recoreds if all valid" do
+      update_params = {}
+      update_params[:queue_item] = {}
+      5.times.each do |i|
+        item = Fabricate(:queue_item, position: 3)
+        update_params[:queue_item].merge!( { item.id => { "position" => 4 } } )
+      end
+      QueueItem.update_queue(update_params[:queue_item])
+      expect(QueueItem.all.map(&:position)).to eq( [4] * 5 )
+    end
+
+    it "cannot update recoreds if one is not integer" do
+      update_params = {}
+      update_params[:queue_item] = {}
+      5.times.each do |i|
+        new_position = 4
+        new_position = 1.5 if i == 2
+        item = Fabricate(:queue_item, position: 3)
+        update_params[:queue_item].merge!( { item.id => { "position" => new_position } } )
+      end
+      QueueItem.update_queue(update_params[:queue_item])
+      expect(QueueItem.all.map(&:position)).to eq( [3] * 5 )
+    end
+
   end
 end
