@@ -4,5 +4,11 @@ class User < ActiveRecord::Base
   validates_presence_of :full_name, :email, :password
   validates_uniqueness_of :email
   has_many :comments
-  has_many :queue_items
+  has_many :queue_items, -> { order :position }
+
+  def normalize_position
+    queue_items.each_with_index do |queue_item, index|
+      queue_item.update_attribute(:position, index+1)
+    end
+  end
 end
