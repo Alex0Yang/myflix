@@ -33,7 +33,7 @@ class QueueItemsController < ApplicationController
       params[:queue_item].each do |queue_item_hash|
         queue_item = QueueItem.find(queue_item_hash[:id])
         if queue_item.user == current_user
-          queue_item.update_attributes!(position: queue_item_hash[:position])
+          queue_item.update_attributes!(position: queue_item_hash[:position], rating: queue_item_hash[:rate])
         end
       end
     end

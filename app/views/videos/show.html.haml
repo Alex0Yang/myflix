@@ -20,7 +20,7 @@
           .row
             = f.alert_message "Please check your input below", error_summary: false
             .col-sm-3
-              = f.select :rate, (1..5).map { |n| [pluralize(n, "Star"), n]}.reverse, { label: "Rate this video"}
+              = f.select :rate, options_for_video_reviews, { label: "Rate this video"}
           .row
             .col-sm-8
               = f.text_area :review, label: "Write Review", rows: "6"

@@ -109,28 +109,23 @@ describe QueueItemsController do
 
   describe "POST queue_item" do
     context "with valid inputs" do
-      it "redirects to the my queue page" do
-        alice = Fabricate(:user)
+      let(:alice) { Fabricate(:user) }
+      let(:queue_item1) { Fabricate(:queue_item, user: alice, position: 4) }
+      let(:queue_item2) { Fabricate(:queue_item, user: alice, position: 5) }
+      before do
         session[:user_id] = alice.id
-        queue_item1 = Fabricate(:queue_item, user: alice)
+      end
+      it "redirects to the my queue page" do
         post :update_queue, queue_item: [{id: queue_item1.id, position: 3}]
         expect(response).to redirect_to my_queue_path
       end
 
       it "reorders the queue item" do
-        alice = Fabricate(:user)
-        session[:user_id] = alice.id
-        queue_item1 = Fabricate(:queue_item, user: alice, position: 4)
-        queue_item2 = Fabricate(:queue_item, user: alice, position: 5)
         post :update_queue, queue_item: [{id: queue_item1.id, position: 3}, {id: queue_item2.id, position: 2}]
         expect(alice.queue_item_ids).to eq([queue_item2.id, queue_item1.id])
       end
 
       it "normalizes the position numbers" do
-        alice = Fabricate(:user)
-        session[:user_id] = alice.id
-        queue_item1 = Fabricate(:queue_item, user: alice, position: 4)
-        queue_item2 = Fabricate(:queue_item, user: alice, position: 5)
         post :update_queue, queue_item: [{id: queue_item1.id, position: 3}, {id: queue_item2.id, position: 2}]
         expect(queue_item1.reload.position).to eq(2)
         expect(queue_item2.reload.position).to eq(1)
@@ -138,29 +133,23 @@ describe QueueItemsController do
     end
 
     context "with invalid inputs" do
-      it "redirects to the my queue page" do
-        alice = Fabricate(:user)
+      let(:alice) { Fabricate(:user) }
+      let(:queue_item1) { Fabricate(:queue_item, user: alice, position: 4) }
+      let(:queue_item2) { Fabricate(:queue_item, user: alice, position: 5) }
+      before do
         session[:user_id] = alice.id
-        queue_item1 = Fabricate(:queue_item, user: alice, position: 4)
-        queue_item2 = Fabricate(:queue_item, user: alice, position: 5)
+      end
+      it "redirects to the my queue page" do
         post :update_queue, queue_item: [{id: queue_item1.id, position: 3.5 }, {id: queue_item2.id, position: 2}]
         expect(response).to redirect_to my_queue_path
       end
 
       it "sets the flash error message" do
-        alice = Fabricate(:user)
-        session[:user_id] = alice.id
-        queue_item1 = Fabricate(:queue_item, user: alice, position: 4)
-        queue_item2 = Fabricate(:queue_item, user: alice, position: 5)
         post :update_queue, queue_item: [{id: queue_item1.id, position: 3.5 }, {id: queue_item2.id, position: 2}]
         expect(flash[:error]).not_to be_blank
       end
 
       it 'does not change the queue items' do
-        alice = Fabricate(:user)
-        session[:user_id] = alice.id
-        queue_item1 = Fabricate(:queue_item, user: alice, position: 4)
-        queue_item2 = Fabricate(:queue_item, user: alice, position: 5)
         post :update_queue, queue_item: [{id: queue_item1.id, position: 3 }, {id: queue_item2.id, position: 2.5}]
         expect(queue_item1.reload.position).to eq(4)
         expect(queue_item2.reload.position).to eq(5)
