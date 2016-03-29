@@ -16,7 +16,7 @@ class VideosController < ApplicationController
 
   def comment
     @video = Video.find(params[:id])
-    @comment = @video.comments.build(rate: params[:comment][:rate], user: current_user, review: params[:comment][:review])
+    @comment = @video.comments.build(rate: params[:comment][:rate], user: current_user, content: params[:comment][:content])
 
     if @comment.save
       flash[:info] = "new comment added!"

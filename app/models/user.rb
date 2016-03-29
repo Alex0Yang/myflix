@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
 
   validates_presence_of :full_name, :email, :password
   validates_uniqueness_of :email
-  has_many :comments
+  has_many :comments, -> { order 'created_at desc' }
   has_many :queue_items, -> { order :position }
 
   def normalize_position
@@ -14,5 +14,13 @@ class User < ActiveRecord::Base
 
   def queue_video?(video)
     queue_items.map(&:video).include?(video)
+  end
+
+  def comments_count
+    comments.count
+  end
+
+  def queue_items_count
+    queue_items.count
   end
 end

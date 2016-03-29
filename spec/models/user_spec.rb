@@ -5,7 +5,7 @@ describe User do
 
     it { should validate_presence_of  :email }
 
-    it { should have_many(:comments) }
+    it { should have_many(:comments).order('created_at desc') }
 
     it { should have_secure_password }
 
@@ -26,6 +26,22 @@ describe User do
         video = Fabricate(:video)
         queue_item = Fabricate(:queue_item, user: alice, video: video)
         expect(bob.queue_video?(video)).to be false
+      end
+    end
+
+    describe "#reviews_count" do
+      it "return the count of reviews" do
+        alice = Fabricate(:user)
+        Fabricate(:comment, user:alice)
+        expect(alice.comments_count).to eq(1)
+      end
+    end
+
+    describe "#queue_items_count" do
+      it "return the count of queue items" do
+        alice = Fabricate(:user)
+        Fabricate(:queue_item, user:alice)
+        expect(alice.queue_items_count).to eq(1)
       end
     end
 end
