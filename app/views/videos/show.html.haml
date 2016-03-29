@@ -24,7 +24,7 @@
               = f.select :rate, options_for_video_reviews, { label: "Rate this video"}
           .row
             .col-sm-8
-              = f.text_area :review, label: "Write Review", rows: "6"
+              = f.text_area :content, label: "Write Review", rows: "6"
         = field_set_tag nil, class: "form-group actions clearfix" do
           = f.submit "Submit", class: "btn"
           = link_to "Cancel", @video
@@ -38,4 +38,4 @@
                 %span  Rating: #{comment.rate} / 5
                 %p by <a href="">#{comment.user.full_name}</a>
               .col-sm-8
-                %p= comment.review
+                %p= comment.content

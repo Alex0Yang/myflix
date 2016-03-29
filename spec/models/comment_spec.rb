@@ -7,7 +7,7 @@ describe Comment do
 
   it { should validate_presence_of(:rate) }
 
-  it { should validate_presence_of(:review) }
+  it { should validate_presence_of(:content) }
 
   it { should validate_presence_of(:user_id) }
 
