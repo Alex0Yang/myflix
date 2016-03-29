@@ -36,6 +36,8 @@
             %li.row
               .col-sm-2
                 %span  Rating: #{comment.rate} / 5
-                %p by <a href="">#{comment.user.full_name}</a>
+                %p
+                  by
+                  = link_to comment.user.full_name, comment.user
               .col-sm-8
                 %p= comment.content

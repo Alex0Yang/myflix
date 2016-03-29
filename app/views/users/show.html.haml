@@ -3,8 +3,8 @@
     .col-sm-10.col-sm-offset-1
       %article
         %header
-          %img(src="http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest('knwang@gmail.com'.downcase)}?s=40")
-          %h2 #{@user.full_name}'s video collections (@user.queue_items_count)
+          %img(src="http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(@user.email.downcase)}?s=40")
+          %h2 #{@user.full_name}'s video collections (#{@user.queue_items_count})
           %button.btn.btn-default Follow
         %table.table
           %thead
@@ -23,7 +23,7 @@
   .row
     .col-sm-10.col-sm-offset-1
       %header
-        %h3 #{@user.full_name}'s Reviews (@user.comments_count)
+        %h3 #{@user.full_name}'s Reviews (#{@user.comments_count})
       %ul
         - @user.comments.each do |comment|
           %article.review
@@ -33,4 +33,4 @@
                   = link_to comment.video_title, comment.video
                 %col Rating: 5 / 5
               .col-sm-8
-                %p= comment.review
+                %p= comment.content
