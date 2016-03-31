@@ -16,6 +16,44 @@ describe RelationshipsController do
     end
   end
 
+  describe "POST create" do
+    it_behaves_like "require_sign_in" do
+      let(:action) { post :create, leader_id: 5 }
+    end
+
+    it "redirect to people page" do
+      alice = Fabricate(:user)
+      set_current_user alice
+      bob = Fabricate(:user)
+      post :create, leader_id: bob.id
+      expect(response).to redirect_to people_path
+    end
+
+    it "current_user follow the leader" do
+      alice = Fabricate(:user)
+      set_current_user alice
+      bob = Fabricate(:user)
+      post :create, leader_id: bob.id
+      expect(current_user.following_relationships.first.leader).to eq(bob)
+    end
+
+    it "cannot follow someone twice" do
+      alice = Fabricate(:user)
+      set_current_user alice
+      bob = Fabricate(:user)
+      Fabricate(:relationship, follower_id: alice.id, leader_id: bob.id)
+      post :create, leader_id: bob.id
+      expect(Relationship.count).to eq(1)
+    end
+
+    it "cannot follow himself" do
+      alice = Fabricate(:user)
+      set_current_user alice
+      post :create, leader_id: alice.id
+      expect(Relationship.count).to eq(0)
+    end
+  end
+
   describe "DELETE destroy" do
     it_behaves_like "require_sign_in" do
       let(:action) { delete :destroy, id: 3 }

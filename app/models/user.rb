@@ -26,4 +26,8 @@ class User < ActiveRecord::Base
   def queue_items_count
     queue_items.count
   end
+
+  def can_follow?(leader)
+   ! ( following_relationships.map(&:leader).include?(leader) || self == leader )
+  end
 end
