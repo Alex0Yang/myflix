@@ -8,10 +8,12 @@ Myflix::Application.routes.draw do
   get '/register', to:'users#new'
   resources :users, only: [:create, :show]
   get 'my_queue', to:"queue_items#index"
+  get 'people', to: "relationships#index"
   post 'update_queue', to:"queue_items#update_queue"
   resources :queue_items, only: [:create, :destroy]
   resources :videos, only: [:index, :show] do
     get 'search', on: :collection
     post 'comment', on: :member
   end
+  resources :relationships, only: [:destroy, :create]
 end

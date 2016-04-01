@@ -44,4 +44,24 @@ describe User do
         expect(alice.queue_items_count).to eq(1)
       end
     end
+
+    describe "#can_follow?" do
+      it "return true if user does not have a following relationship with another user" do
+        alice = Fabricate(:user)
+        bob = Fabricate(:user)
+        expect(bob.can_follow?(alice)).to be_truthy
+      end
+
+      it "return false if user has a following relationship with another user" do
+        alice = Fabricate(:user)
+        bob = Fabricate(:user)
+        Fabricate(:relationship, follower: bob, leader: alice)
+        expect(bob.can_follow?(alice)).to be_falsey
+      end
+
+      it "return false if user want to follow themselves" do
+        bob = Fabricate(:user)
+        expect(bob.can_follow?(bob)).to be_falsey
+      end
+    end
 end
