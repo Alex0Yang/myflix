@@ -9,6 +9,7 @@ class UsersController < ApplicationController
     @user = User.new(_permit_params)
 
     if @user.save
+      UserMailer.welcome_on_register(@user).deliver
       redirect_to sign_in_path, info: 'You are signed in, enjogy!'
     else
       render :new

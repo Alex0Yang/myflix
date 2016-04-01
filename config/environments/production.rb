@@ -17,4 +17,14 @@ Myflix::Application.configure do
   config.i18n.fallbacks = true
 
   config.active_support.deprecation = :notify
+
+  config.action_mailer.smtp_settings = {
+    address: "smtp.qq.com",
+    port: 25,
+    domain: "qq.com",
+    authentication: "login",
+    enable_starttls_auto: true,
+    user_name: ENV["MAIL_USERNAME"],
+    password: ENV["MAIL_PASSWORD"]
+  }
 end
