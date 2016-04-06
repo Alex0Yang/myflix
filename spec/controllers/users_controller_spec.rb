@@ -22,10 +22,29 @@ describe UsersController do
       end
     end
 
-    context "user's input in invalid" do
-      before do
-        post :create, user: { full_name: "some" }
+    context "email sending" do
+      let!(:user) { Fabricate.attributes_for(:user) }
+      after { ActionMailer::Base.deliveries.clear }
+
+      it "sends out the email with valid inputs" do
+        post :create, user: user
+        expect(ActionMailer::Base.deliveries.last.to).to eq([user[:email]])
       end
+
+      it "sending out email containing the user's name with valid inputs" do
+        post :create, user: user
+        message = ActionMailer::Base.deliveries.last
+        expect(message.body).to include(user[:full_name])
+      end
+
+      it "does not send out email with invalid inputs" do
+        post :create, user: { full_name: "some" }
+        expect(ActionMailer::Base.deliveries).to be_empty
+      end
+    end
+
+    context "user's input in invalid" do
+      before { post :create, user: { full_name: "some" } }
 
       it "cannot registers" do
         expect(User.find_by full_name: "some").to be nil

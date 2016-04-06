@@ -18,4 +18,18 @@ Myflix::Application.configure do
   config.assets.debug = true
 
   config.eager_load = false
+
+  #config.action_mailer.delivery_method = :letter_opener
+  config.action_mailer.delivery_method = :letter_opener
+  config.action_mailer.default_url_options = { host: 'localhost:8080' }
+
+  config.action_mailer.smtp_settings = {
+    address: "smtp.qq.com",
+    port: 25,
+    domain: "qq.com",
+    authentication: "login",
+    enable_starttls_auto: true,
+    user_name: ENV["MAIL_USERNAME"],
+    password: ENV["MAIL_PASSWORD"]
+  }
 end
