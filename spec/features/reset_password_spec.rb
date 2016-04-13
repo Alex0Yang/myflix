@@ -2,7 +2,6 @@ require 'spec_helper'
 
 feature "reset password" do
   scenario "reset password through email" do
-    clear_emails
     alice = Fabricate(:user,password: "password", email: "alice@example.com")
 
     visit forgot_password_path
@@ -23,5 +22,7 @@ feature "reset password" do
     click_button 'Sign in'
 
     expect(page).to have_content alice.full_name
+
+    clear_emails
   end
 end

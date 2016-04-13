@@ -5,10 +5,30 @@ class UsersController < ApplicationController
     @user = User.new
   end
 
+  def new_with_invitation_token
+    @user = User.new
+    invitation = Invitation.find_by(invite_token: params[:invite_token])
+
+    if invitation
+      @invite_token = params[:invite_token]
+      @user.email = invitation.friend_email
+      render :new
+    else
+      redirect_to expired_token_path
+    end
+  end
+
   def create
     @user = User.new(_permit_params)
+    @invite_token = params[:invite_token]
+    invitation = Invitation.find_by(invite_token: @invite_token)
 
     if @user.save
+      if invitation
+        @user.follow(invitation.inviter)
+        invitation.inviter.follow(@user)
+        invitation.update_column(:invite_token, nil)
+      end
       UserMailer.welcome_on_register(@user).deliver
       redirect_to sign_in_path, info: 'You are signed in, enjogy!'
     else

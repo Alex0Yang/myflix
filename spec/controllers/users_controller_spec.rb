@@ -1,6 +1,29 @@
 require 'spec_helper'
 
 describe UsersController do
+  describe "GET new_with_invite_token" do
+    let(:invitation) { Fabricate(:invitation, friend_email: "test@test.com") }
+
+    it "set @user with friend's email" do
+      get :new_with_invitation_token, invite_token: invitation.invite_token
+      expect(assigns(:user).email).to eq("test@test.com")
+    end
+
+    it "set @invite_token" do
+      get :new_with_invitation_token, invite_token: invitation.invite_token
+      expect(assigns(:invite_token)).to eq(invitation.invite_token)
+    end
+
+    it "renders the :new view template" do
+      get :new_with_invitation_token, invite_token: invitation.invite_token
+      expect(response).to render_template :new
+    end
+
+    it "show expired token page if invalid token" do
+      get :new_with_invitation_token, invite_token: invitation.invite_token + "213"
+      expect(response).to redirect_to expired_token_path
+    end
+  end
   describe "GET new" do
     it "set the @user" do
       get :new
@@ -9,9 +32,37 @@ describe UsersController do
   end
 
   describe "POST create" do
+    after { ActionMailer::Base.deliveries.clear }
+    context "invite user" do
+      let(:alice) { Fabricate(:user) }
+      let(:bob) { Fabricate.attributes_for(:user) }
+      let!(:invitation) { Fabricate(:invitation, inviter: alice, friend_email: bob[:email]) }
+
+      before { post :create, user: bob, invite_token: invitation.invite_token }
+
+      it "delete the invited token" do
+        expect(Invitation.last.invite_token).to eq(nil)
+      end
+
+      it "set @invite_token" do
+        expect(assigns(:invite_token)).to eq(invitation.invite_token)
+      end
+
+      it "makes the user follow the inviter" do
+        new_user = User.find_by email: bob[:email]
+        expect(alice.follows?(new_user)).to be_truthy
+      end
+
+      it "makes the inviter follow the inviter" do
+        new_user = User.find_by email: bob[:email]
+        expect(alice.follows?(new_user)).to be_truthy
+      end
+    end
+
     context "user's input is valid" do
       let!(:user) { Fabricate.attributes_for(:user) }
       before { post :create, user: user }
+
 
       it "user registers successfully" do
         expect(User.find_by(email: user[:email]).full_name).to eq(user[:full_name])
@@ -24,7 +75,6 @@ describe UsersController do
 
     context "email sending" do
       let!(:user) { Fabricate.attributes_for(:user) }
-      after { ActionMailer::Base.deliveries.clear }
 
       it "sends out the email with valid inputs" do
         post :create, user: user
