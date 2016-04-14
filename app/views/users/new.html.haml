@@ -9,6 +9,7 @@
         = f.email_field :email, label: "Email Address"
         = f.password_field :password, label: "Password"
         = f.text_field :full_name, label: "Full Name"
+        = hidden_field_tag 'invite_token', @invite_token
         %fieldset
           = f.form_group do
             = f.submit "Sign Up"

@@ -8,4 +8,9 @@ class UserMailer < ActionMailer::Base
     @user = user
     mail from: ENV["MAIL_USERNAME"], to: user.email, subject: "Reset password email"
   end
+
+  def invite_friend(invitation)
+   @invitation = invitation
+   mail from: ENV["MAIL_USERNAME"], to: @invitation.friend_email, subject: "Invitation to join MyFlix"
+  end
 end

@@ -64,4 +64,35 @@ describe User do
         expect(bob.can_follow?(bob)).to be_falsey
       end
     end
+    describe "follow(another_user)" do
+      it "follows another user" do
+        alice = Fabricate(:user)
+        bob = Fabricate(:user)
+        alice.follow(bob)
+        expect(alice.follows?(bob)).to be_truthy
+      end
+
+      it "does not follow one self" do
+        alice = Fabricate(:user)
+        alice.follow(alice)
+        expect(alice.follows?(alice)).to be false
+      end
+
+    end
+
+    describe "follows?(another_user)"do
+      it "return true if followed another user" do
+        alice = Fabricate(:user)
+        bob = Fabricate(:user)
+        Fabricate(:relationship, leader: alice, follower: bob)
+        expect(bob.follows?(alice)).to be_truthy
+      end
+
+      it "return false if didn't followed another user" do
+        alice = Fabricate(:user)
+        bob = Fabricate(:user)
+        Fabricate(:relationship, leader: Fabricate(:user), follower: bob)
+        expect(bob.follows?(alice)).to be false
+      end
+    end
 end
