@@ -3,7 +3,7 @@ class ForgotPasswordsController < ApplicationController
     user = User.find_by email: params[:email]
     if user
       user.update_column(:reset_token, SecureRandom.urlsafe_base64)
-      UserMailer.reset_password(user).deliver
+      UserMailer.delay.reset_password(user.id)
       redirect_to forgot_password_confirmation_path
     else
       flash[:danger] = params[:email].blank? ? "Email cannot be blank." : "User is not existed."

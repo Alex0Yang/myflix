@@ -9,7 +9,7 @@ class InvitationsController < ApplicationController
     @invitation = current_user.invitations.build invitation_params
 
     if @invitation.save
-      UserMailer.invite_friend(@invitation).deliver
+      UserMailer.delay.invite_friend(@invitation.id)
       flash[:info] = "You have successfully invited #{@invitation.friend_name}."
       redirect_to new_invitation_path
     else
