@@ -17,6 +17,7 @@ gem 'sinatra', require: false
 gem 'slim'
 gem 'fabrication'
 gem 'faker'
+gem 'unicorn'
 
 group :development do
   gem 'thin'
