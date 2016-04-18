@@ -29,7 +29,7 @@ class UsersController < ApplicationController
         invitation.inviter.follow(@user)
         invitation.update_column(:invite_token, nil)
       end
-      UserMailer.welcome_on_register(@user).deliver
+      UserMailer.delay.welcome_on_register(@user.id)
       redirect_to sign_in_path, info: 'You are signed in, enjogy!'
     else
       render :new

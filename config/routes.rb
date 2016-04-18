@@ -1,4 +1,6 @@
 Myflix::Application.routes.draw do
+  #require 'sidekiq/web'
+  #mount Sidekiq::Web, at:'/sidekiq'
   root "sessions#front"
   get 'ui(/:action)', controller: 'ui'
   get '/genre/:id', to: 'categories#show', as: 'category'
