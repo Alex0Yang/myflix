@@ -29,5 +29,10 @@ Myflix::Application.routes.draw do
     get 'search', on: :collection
     post 'comment', on: :member
   end
+
   resources :relationships, only: [:destroy, :create]
+
+  namespace :admin do
+    resources :videos, only:[:new, :create]
+  end
 end
