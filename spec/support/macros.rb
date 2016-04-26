@@ -18,6 +18,14 @@ def sign_in(a_user=nil)
   click_button "Sign in"
 end
 
+def sign_in_admin(a_admin = nil)
+  admin = a_admin ||= Fabricate(:admin)
+  visit sign_in_path
+  fill_in "email", :with => admin.email
+  fill_in "password", :with => admin.password
+  click_button "Sign in"
+end
+
 def click_on_video_on_home_page(video)
   find("a[href='/videos/#{video.id}']").click
 end
