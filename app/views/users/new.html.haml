@@ -12,4 +12,4 @@
         = hidden_field_tag 'invite_token', @invite_token
         %fieldset
           = f.form_group do
-            = f.submit "Sign Up"
+            %script{ src: "https://checkout.stripe.com/checkout.js", class: "stripe-button", data: { key: Rails.configuration.stripe[:publishable_key], description: "Myflix Sign Up Charge", amount: "999", locale: "auto"}  }

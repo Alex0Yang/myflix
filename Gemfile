@@ -21,6 +21,7 @@ gem 'unicorn'
 gem 'carrierwave'
 gem 'carrierwave-aws'
 gem 'mini_magick'
+gem 'stripe'
 
 group :development do
   gem 'thin'

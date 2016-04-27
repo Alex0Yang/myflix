@@ -23,7 +23,8 @@ class UsersController < ApplicationController
     @invite_token = params[:invite_token]
     invitation = Invitation.find_by(invite_token: @invite_token)
 
-    if @user.save
+    if @user.valid? && charge_user
+      @user.save
       if invitation
         @user.follow(invitation.inviter)
         invitation.inviter.follow(@user)
@@ -44,6 +45,29 @@ class UsersController < ApplicationController
 
   def _permit_params
     params.require(:user).permit(:email, :password, :full_name)
+  end
+
+  def charge_user
+    amount = 999
+
+    begin
+      customer = Stripe::Customer.create(
+        :email => params[:stripeEmail],
+        :source  => params[:stripeToken]
+      )
+
+      charge = Stripe::Charge.create(
+        :customer    => customer.id,
+        :amount      => amount,
+        :description => "Sign up change for #{@user.email}",
+        :currency    => 'usd'
+      )
+
+    rescue Stripe::CardError => e
+      flash[:error] = e.message
+      render :new
+      return
+    end
   end
 
 end
