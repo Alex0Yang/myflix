@@ -51,13 +51,8 @@ class UsersController < ApplicationController
     amount = 999
 
     begin
-      customer = Stripe::Customer.create(
-        :email => params[:stripeEmail],
-        :source  => params[:stripeToken]
-      )
-
       charge = Stripe::Charge.create(
-        :customer    => customer.id,
+        :source  => params[:stripeToken],
         :amount      => amount,
         :description => "Sign up change for #{@user.email}",
         :currency    => 'usd'
@@ -65,7 +60,6 @@ class UsersController < ApplicationController
 
     rescue Stripe::CardError => e
       flash[:error] = e.message
-      render :new
       return
     end
   end
