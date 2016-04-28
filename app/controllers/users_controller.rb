@@ -48,6 +48,7 @@ class UsersController < ApplicationController
   end
 
   def charge_user
+    return true unless params[:stripeToken].present?
     amount = 999
 
     begin
