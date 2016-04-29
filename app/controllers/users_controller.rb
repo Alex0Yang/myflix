@@ -51,18 +51,19 @@ class UsersController < ApplicationController
     return true unless params[:stripeToken].present?
     amount = 999
 
-    begin
-      charge = Stripe::Charge.create(
-        :source  => params[:stripeToken],
-        :amount      => amount,
-        :description => "Sign up change for #{@user.email}",
-        :currency    => 'usd'
-      )
+    charge = StripeWrapper::Charge.create(
+      :source  => params[:stripeToken],
+      :amount      => amount,
+      :description => "Sign up change for #{@user.email}",
+    )
 
-    rescue Stripe::CardError => e
-      flash[:error] = e.message
-      return
+    if charge.successful?
+      true
+    else
+      flash[:error] = charge.error_message
+      false
     end
-  end
 
+  end
 end
+

@@ -4,6 +4,8 @@ require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'capybara/rspec'
 require 'capybara/email/rspec'
+require 'webmock/rspec'
+require 'vcr'
 
 require 'sidekiq/testing'
 Sidekiq::Testing.inline!
@@ -63,7 +65,17 @@ RSpec.configure do |config|
   # The different available types are documented in the features, such as in
   # https://relishapp.com/rspec/rspec-rails/v/3-0/docs
   config.infer_spec_type_from_file_location!
+  config.treat_symbols_as_metadata_keys_with_true_values = true
 end
+
+VCR.configure do |config|
+  config.cassette_library_dir = "spec/cassettes"
+  config.hook_into :webmock # or :fakeweb
+  config.configure_rspec_metadata!
+  config.allow_http_connections_when_no_cassette = true
+  config.default_cassette_options = { record: :once }
+end
+
 
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|
