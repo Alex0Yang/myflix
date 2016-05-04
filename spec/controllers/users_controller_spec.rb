@@ -61,15 +61,41 @@ describe UsersController do
 
     context "user's input is valid" do
       let!(:user) { Fabricate.attributes_for(:user) }
-      before { post :create, user: user }
 
+      context "credit card is valid" do
+        before do
+          charge = double(:charge, successful?: true)
+          StripeWrapper::Charge.should_receive(:create).and_return(charge)
+          post :create, user: user, stripeToken: '123456'
+        end
 
-      it "user registers successfully" do
-        expect(User.find_by(email: user[:email]).full_name).to eq(user[:full_name])
+        it "user registers successfully" do
+          expect(User.find_by(email: user[:email]).full_name).to eq(user[:full_name])
+        end
+
+        it "redirect to sign in page" do
+          expect(response).to redirect_to sign_in_path
+        end
       end
 
-      it "redirect to sign in page" do
-        expect(response).to redirect_to sign_in_path
+      context "credit card is invalid" do
+        before do
+          charge = double(:charge, successful?: false, error_message: "This card is declined.")
+          StripeWrapper::Charge.should_receive(:create).and_return(charge)
+          post :create, user: user, stripeToken: '123456'
+        end
+
+        it "user registers unsuccessfully" do
+          expect(User.count).to eq(0)
+        end
+
+        it "redirect new page" do
+          should render_template('new')
+        end
+
+        it "show notice" do
+          should set_flash[:error]
+        end
       end
     end
 
@@ -77,12 +103,16 @@ describe UsersController do
       let!(:user) { Fabricate.attributes_for(:user) }
 
       it "sends out the email with valid inputs" do
-        post :create, user: user
+        charge = double(:charge, successful?: true)
+        StripeWrapper::Charge.should_receive(:create).and_return(charge)
+        post :create, user: user, stripeToken: '123456'
         expect(ActionMailer::Base.deliveries.last.to).to eq([user[:email]])
       end
 
       it "sending out email containing the user's name with valid inputs" do
-        post :create, user: user
+        charge = double(:charge, successful?: true)
+        StripeWrapper::Charge.should_receive(:create).and_return(charge)
+        post :create, user: user, stripeToken: '123456'
         message = ActionMailer::Base.deliveries.last
         expect(message.body).to include(user[:full_name])
       end
@@ -91,10 +121,20 @@ describe UsersController do
         post :create, user: { full_name: "some" }
         expect(ActionMailer::Base.deliveries).to be_empty
       end
+
+      it "does not send out email with invalid credit card" do
+        charge = double(:charge, successful?: false, error_message: "This card is declined.")
+        StripeWrapper::Charge.should_receive(:create).and_return(charge)
+        post :create, user: user, stripeToken: '123456'
+        expect(ActionMailer::Base.deliveries).to be_empty
+      end
     end
 
     context "user's input in invalid" do
-      before { post :create, user: { full_name: "some" } }
+      before do
+        StripeWrapper::Charge.should_not_receive(:create)
+        post :create, user: { full_name: "some" }, stripeToken: '123456'
+      end
 
       it "cannot registers" do
         expect(User.find_by full_name: "some").to be nil

@@ -6,6 +6,10 @@ require 'capybara/rspec'
 require 'capybara/email/rspec'
 require 'webmock/rspec'
 require 'vcr'
+#require 'capybara/poltergeist'
+
+#Capybara.javascript_driver = :poltergeist
+Capybara.server_port = 52662
 
 require 'sidekiq/testing'
 Sidekiq::Testing.inline!
@@ -38,7 +42,7 @@ RSpec.configure do |config|
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
-  config.use_transactional_fixtures = true
+  config.use_transactional_fixtures = false
 
   # If true, the base class of anonymous controllers will be inferred
   # automatically. This will be the default behavior in future versions of
@@ -66,6 +70,26 @@ RSpec.configure do |config|
   # https://relishapp.com/rspec/rspec-rails/v/3-0/docs
   config.infer_spec_type_from_file_location!
   config.treat_symbols_as_metadata_keys_with_true_values = true
+
+  config.before(:suite) do
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.strategy = :truncation
+  end
+
+  config.before(:each, :js => true) do
+    DatabaseCleaner.strategy = :truncation
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
 end
 
 VCR.configure do |config|
@@ -74,6 +98,7 @@ VCR.configure do |config|
   config.configure_rspec_metadata!
   config.allow_http_connections_when_no_cassette = true
   config.default_cassette_options = { record: :once }
+  config.ignore_localhost = true
 end
 
 

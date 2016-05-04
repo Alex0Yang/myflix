@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature "invite user" do
-  scenario "invite user through email" do
+  scenario "invite user through email", { js: true, vcr: true } do
     alice = Fabricate(:user, full_name: "Alice", password: "password", email: "alice@example.com")
     sign_in alice
     invite_a_friend
@@ -16,25 +16,26 @@ feature "invite user" do
 
   def invite_a_friend
     visit new_invitation_path
-    fill_in "invitation_friend_name", with: "lee"
-    fill_in "invitation_friend_email", with: "lee@example.com"
-    fill_in "invitation_message", with: "hi"
+    fill_in "Friend's Name", with: "lee"
+    fill_in "Friend's Email Address", with: "lee@example.com"
+    fill_in "Invitation Message", with: "hi"
     click_button "Send Invitation"
-    click_link "Sign Out"
+    visit sign_out_path
   end
 
   def friend_accepts_invitation
     open_email('lee@example.com')
     current_email.click_link "Accept this invitation"
-    expect(page).to have_content "Register"
-    expect(find('input[id="user_email"]').value).to eq("lee@example.com")
     fill_in "user_password", with: "password"
     fill_in "user_full_name", with: "lee yang"
+    fill_in "Credit Card Number", with: "4242424242424242"
+    fill_in "Security Code", with: "123"
+    select "7 - July", from: "date_month"
+    select "2016", from: "date_year"
     click_button "Sign Up"
   end
 
   def friend_signs_in
-    visit sign_in_path
     fill_in "email", :with => "lee@example.com"
     fill_in "password", :with => "password"
     click_button "Sign in"
@@ -42,9 +43,9 @@ feature "invite user" do
   end
 
   def friend_should_follow(alice)
-    visit people_path
+    click_link "People"
     expect(page).to have_content alice.full_name
-    click_link "Sign Out"
+    visit sign_out_path
   end
 
   def inviter_should_follow_friend(alice)
