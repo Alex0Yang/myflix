@@ -21,15 +21,10 @@ class UsersController < ApplicationController
   def create
     @user = User.new(_permit_params)
     @invite_token = params[:invite_token]
-    invitation = Invitation.find_by(invite_token: @invite_token)
 
-    if @user.valid? && charge_user
+    if @user.valid? && handle_charge
       @user.save
-      if invitation
-        @user.follow(invitation.inviter)
-        invitation.inviter.follow(@user)
-        invitation.update_column(:invite_token, nil)
-      end
+      handle_invitation
       UserMailer.delay.welcome_on_register(@user.id)
       redirect_to sign_in_path, info: 'You are signed in, enjogy!'
     else
@@ -47,9 +42,18 @@ class UsersController < ApplicationController
     params.require(:user).permit(:email, :password, :full_name)
   end
 
-  def charge_user
-    return true unless params[:stripeToken].present?
-    amount = 999
+  def handle_invitation
+    invitation = Invitation.find_by(invite_token: @invite_token)
+    if invitation
+      @user.follow(invitation.inviter)
+      invitation.inviter.follow(@user)
+      invitation.update_column(:invite_token, nil)
+    end
+  end
+
+  def handle_charge
+    return false unless params[:stripeToken].present?
+    amount = 99
 
     charge = StripeWrapper::Charge.create(
       :source  => params[:stripeToken],

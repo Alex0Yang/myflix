@@ -24,6 +24,7 @@ describe UsersController do
       expect(response).to redirect_to expired_token_path
     end
   end
+
   describe "GET new" do
     it "set the @user" do
       get :new
@@ -33,12 +34,17 @@ describe UsersController do
 
   describe "POST create" do
     after { ActionMailer::Base.deliveries.clear }
+
     context "invite user" do
       let(:alice) { Fabricate(:user) }
       let(:bob) { Fabricate.attributes_for(:user) }
       let!(:invitation) { Fabricate(:invitation, inviter: alice, friend_email: bob[:email]) }
+      let(:charge) { double(:charge, successful?: true) }
 
-      before { post :create, user: bob, invite_token: invitation.invite_token }
+      before do
+        StripeWrapper::Charge.should_receive(:create).and_return(charge)
+        post :create, user: bob, invite_token: invitation.invite_token, stripeToken: "123"
+      end
 
       it "delete the invited token" do
         expect(Invitation.last.invite_token).to eq(nil)
@@ -59,43 +65,42 @@ describe UsersController do
       end
     end
 
-    context "user's input is valid" do
+    context "user's input is valid and valid card" do
       let!(:user) { Fabricate.attributes_for(:user) }
 
-      context "credit card is valid" do
-        before do
-          charge = double(:charge, successful?: true)
-          StripeWrapper::Charge.should_receive(:create).and_return(charge)
-          post :create, user: user, stripeToken: '123456'
-        end
-
-        it "user registers successfully" do
-          expect(User.find_by(email: user[:email]).full_name).to eq(user[:full_name])
-        end
-
-        it "redirect to sign in page" do
-          expect(response).to redirect_to sign_in_path
-        end
+      before do
+        charge = double(:charge, successful?: true)
+        StripeWrapper::Charge.should_receive(:create).and_return(charge)
+        post :create, user: user, stripeToken: '123456'
       end
 
-      context "credit card is invalid" do
-        before do
-          charge = double(:charge, successful?: false, error_message: "This card is declined.")
-          StripeWrapper::Charge.should_receive(:create).and_return(charge)
-          post :create, user: user, stripeToken: '123456'
-        end
+      it "user registers successfully" do
+        expect(User.find_by(email: user[:email]).full_name).to eq(user[:full_name])
+      end
 
-        it "user registers unsuccessfully" do
-          expect(User.count).to eq(0)
-        end
+      it "redirect to sign in page" do
+        expect(response).to redirect_to sign_in_path
+      end
+    end
 
-        it "redirect new page" do
-          should render_template('new')
-        end
+    context "valid personal info and declined card" do
+      let!(:user) { Fabricate.attributes_for(:user) }
+      before do
+        charge = double(:charge, successful?: false, error_message: "This card is declined.")
+        StripeWrapper::Charge.should_receive(:create).and_return(charge)
+        post :create, user: user, stripeToken: '123456'
+      end
 
-        it "show notice" do
-          should set_flash[:error]
-        end
+      it "does not create a new user record" do
+        expect(User.count).to eq(0)
+      end
+
+      it "render new page" do
+        should render_template('new')
+      end
+
+      it "show notice" do
+        should set_flash[:error]
       end
     end
 
@@ -133,7 +138,7 @@ describe UsersController do
     context "user's input in invalid" do
       before do
         StripeWrapper::Charge.should_not_receive(:create)
-        post :create, user: { full_name: "some" }, stripeToken: '123456'
+        post :create, user: { full_name: "some" }
       end
 
       it "cannot registers" do

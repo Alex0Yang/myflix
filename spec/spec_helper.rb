@@ -6,9 +6,9 @@ require 'capybara/rspec'
 require 'capybara/email/rspec'
 require 'webmock/rspec'
 require 'vcr'
-#require 'capybara/poltergeist'
+require 'capybara/poltergeist'
 
-#Capybara.javascript_driver = :poltergeist
+Capybara.javascript_driver = :poltergeist
 Capybara.server_port = 52662
 
 require 'sidekiq/testing'
