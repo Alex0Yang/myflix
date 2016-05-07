@@ -81,6 +81,10 @@ describe UsersController do
       it "redirect to sign in page" do
         expect(response).to redirect_to sign_in_path
       end
+
+      it "show notice" do
+        should set_flash[:notice]
+      end
     end
 
     context "valid personal info and declined card" do
@@ -151,6 +155,10 @@ describe UsersController do
 
       it "set @user" do
         expect(assigns(:user)).to be_kind_of(User)
+      end
+
+      it "show the notice" do
+        should set_flash[:danger]
       end
     end
   end

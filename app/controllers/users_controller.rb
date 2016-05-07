@@ -22,12 +22,15 @@ class UsersController < ApplicationController
     @user = User.new(_permit_params)
     @invite_token = params[:invite_token]
 
-    if @user.valid? && handle_charge
+    if @user.valid?
+      handle_charge and return
       @user.save
       handle_invitation
       UserMailer.delay.welcome_on_register(@user.id)
-      redirect_to sign_in_path, info: 'You are signed in, enjogy!'
+      flash[:notice] = 'Thank you for registering with MyFLix. Please sign in now.'
+      redirect_to sign_in_path
     else
+      flash[:danger] = "Invalid user inforamtion, Please check the errors below."
       render :new
     end
   end
@@ -52,7 +55,6 @@ class UsersController < ApplicationController
   end
 
   def handle_charge
-    return false unless params[:stripeToken].present?
     amount = 99
 
     charge = StripeWrapper::Charge.create(
@@ -61,13 +63,10 @@ class UsersController < ApplicationController
       :description => "Sign up change for #{@user.email}",
     )
 
-    if charge.successful?
-      true
-    else
+    unless charge.successful?
       flash[:error] = charge.error_message
-      false
+      render :new and return true
     end
-
   end
 end
 
