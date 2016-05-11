@@ -13,6 +13,8 @@ class ApplicationController < ActionController::Base
     unless current_user
       flash[:danger] = "Access reserved for members only. Please sign in first."
       redirect_to sign_in_path
+      return
     end
+    true
   end
 end

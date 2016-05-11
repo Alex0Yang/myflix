@@ -7,6 +7,7 @@ Myflix::Application.routes.draw do
   get '/sign_in', to:'sessions#new'
   post '/sign_in', to:'sessions#create'
   post '/sign_out', to:'sessions#destroy'
+  get  '/sign_out', to:'sessions#destroy'
   get '/register/:invite_token', to:'users#new_with_invitation_token', as: 'register_with_token'
   get '/register', to:'users#new'
   resources :users, only: [:create, :show]
@@ -29,5 +30,10 @@ Myflix::Application.routes.draw do
     get 'search', on: :collection
     post 'comment', on: :member
   end
+
   resources :relationships, only: [:destroy, :create]
+
+  namespace :admin do
+    resources :videos, only:[:new, :create]
+  end
 end
