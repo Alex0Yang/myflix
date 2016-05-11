@@ -17,4 +17,8 @@ class Video < ActiveRecord::Base
     comments.reload.each { |c| total += c.rate }
     ( total * 1.0 / comments.count ).round(1)
   end
+
+  def rating
+    comments.average(:rate).round(1) if comments.average(:rate)
+  end
 end

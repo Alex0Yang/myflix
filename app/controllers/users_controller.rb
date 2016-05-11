@@ -20,17 +20,13 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(_permit_params)
-    @invite_token = params[:invite_token]
 
-    if @user.valid?
-      handle_charge and return
-      @user.save
-      handle_invitation
-      UserMailer.delay.welcome_on_register(@user.id)
+    result = UserCreation.new(@user).signup(invite_token: params[:invite_token], stripe_token: params[:stripeToken])
+    if result.successful?
       flash[:notice] = 'Thank you for registering with MyFLix. Please sign in now.'
       redirect_to sign_in_path
     else
-      flash[:danger] = "Invalid user inforamtion, Please check the errors below."
+      flash[:danger] = result.error_message
       render :new
     end
   end
@@ -43,30 +39,6 @@ class UsersController < ApplicationController
 
   def _permit_params
     params.require(:user).permit(:email, :password, :full_name)
-  end
-
-  def handle_invitation
-    invitation = Invitation.find_by(invite_token: @invite_token)
-    if invitation
-      @user.follow(invitation.inviter)
-      invitation.inviter.follow(@user)
-      invitation.update_column(:invite_token, nil)
-    end
-  end
-
-  def handle_charge
-    amount = 99
-
-    charge = StripeWrapper::Charge.create(
-      :source  => params[:stripeToken],
-      :amount      => amount,
-      :description => "Sign up change for #{@user.email}",
-    )
-
-    unless charge.successful?
-      flash[:error] = charge.error_message
-      render :new and return true
-    end
   end
 end
 

@@ -5,7 +5,7 @@ http_interactions:
     uri: https://api.stripe.com/v1/charges
     body:
       encoding: US-ASCII
-      string: amount=99&currency=usd&description=Sign+up+change+for+lee%40examle.com&source=tok_187wVGEDK3tRuRHO4roaF5QH
+      string: amount=99&currency=usd&description=Sign+up+change+for+lee%40examle.com&source=tok_189omFEDK3tRuRHO2qokGr5w
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
@@ -19,8 +19,8 @@ http_interactions:
       - application/x-www-form-urlencoded
       X-Stripe-Client-User-Agent:
       - '{"bindings_version":"1.41.0","lang":"ruby","lang_version":"2.1.2 p95 (2014-05-08)","platform":"x86_64-darwin14.0","engine":"ruby","publisher":"stripe","uname":"Darwin
-        SW-HPA-Long.local 15.3.0 Darwin Kernel Version 15.3.0: Thu Dec 10 18:40:58
-        PST 2015; root:xnu-3248.30.4~1/RELEASE_X86_64 x86_64","hostname":"SW-HPA-Long.local"}'
+        SW-HPA-Long.local 15.4.0 Darwin Kernel Version 15.4.0: Fri Feb 26 22:08:05
+        PST 2016; root:xnu-3248.40.184~3/RELEASE_X86_64 x86_64","hostname":"SW-HPA-Long.local"}'
       Content-Length:
       - '106'
   response:
@@ -31,7 +31,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 06 May 2016 00:07:37 GMT
+      - Wed, 11 May 2016 04:16:58 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -49,7 +49,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_8Ojzel3feR6eGQ
+      - req_8Qg8KHfn38ON5a
       Stripe-Version:
       - '2016-03-07'
       Strict-Transport-Security:
@@ -58,14 +58,14 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "ch_187wVJEDK3tRuRHODFswot3u",
+          "id": "ch_189omMEDK3tRuRHO5kX4X9UO",
           "object": "charge",
           "amount": 99,
           "amount_refunded": 0,
           "application_fee": null,
-          "balance_transaction": "txn_187wVJEDK3tRuRHOsN55YBQ5",
+          "balance_transaction": "txn_189omMEDK3tRuRHOyi3TTFd2",
           "captured": true,
-          "created": 1462493257,
+          "created": 1462940218,
           "currency": "usd",
           "customer": null,
           "description": "Sign up change for lee@examle.com",
@@ -87,11 +87,11 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/charges/ch_187wVJEDK3tRuRHODFswot3u/refunds"
+            "url": "/v1/charges/ch_189omMEDK3tRuRHO5kX4X9UO/refunds"
           },
           "shipping": null,
           "source": {
-            "id": "card_187wVGEDK3tRuRHOgbVd26Br",
+            "id": "card_189omFEDK3tRuRHO3MxuHeia",
             "object": "card",
             "address_city": null,
             "address_country": null,
@@ -120,5 +120,5 @@ http_interactions:
           "status": "succeeded"
         }
     http_version: 
-  recorded_at: Fri, 06 May 2016 00:07:37 GMT
+  recorded_at: Wed, 11 May 2016 04:16:59 GMT
 recorded_with: VCR 3.0.1
