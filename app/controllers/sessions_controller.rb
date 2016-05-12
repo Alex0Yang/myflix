@@ -21,11 +21,8 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    if params[:user] == session[:user_id].to_s
-      session[:user_id] = nil
-      flash[:success] = "You are signed out, bye!"
-    end
-
+    session[:user_id] = nil
+    flash[:success] = "You are signed out, bye!"
     redirect_to sign_in_path
   end
 end

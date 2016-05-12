@@ -1,7 +1,14 @@
+= content_for :head do
+  %script{ type: "text/javascript", src: "https://js.stripe.com/v2/" }
+  :javascript
+    Stripe.setPublishableKey("#{Rails.configuration.stripe[:publishable_key]}");
+  =javascript_include_tag 'payments'
+
 %section.register.container
   .row
     .col-sm-10.col-sm-offset-1
       = bootstrap_form_for(@user, layout: :horizontal, label: "col-sm-2", control_col: "col-sm-6" ) do |f|
+        = content_tag :div, "", class:"payment-errors alert alert_info"
         %header
           %h1 Register
           = f.alert_message "Please check your input below", error_summary: false
@@ -10,6 +17,21 @@
         = f.password_field :password, label: "Password"
         = f.text_field :full_name, label: "Full Name"
         = hidden_field_tag 'invite_token', @invite_token
+        %fieldset.credit_card
+          .form-group
+            %label.control-label.col-sm-2(for="credit-card-number") Credit Card Number
+            .col-sm-6
+              %input.form-control#credit-card-number(type="text" data-stripe="number")
+          .form-group
+            %label.control-label.col-sm-2(for="security-code") Security Code
+            .col-sm-6
+              %input.form-control#security-code(type="text" data-stripe="cvc")
+          .form-group
+            %label.control-label.col-sm-2 Expiration
+            .col-sm-3
+              = select_month(Date.today, {add_month_numbers: true},  class: 'form-control', data: { stripe: "exp_month"})
+            .col-sm-2
+              = select_year(Date.today.year, {start_year: Date.today.year, end_year: Date.today.year + 4}, class: 'form-control', data: { stripe: "exp_year"})
         %fieldset
           = f.form_group do
-            = f.submit "Sign Up"
+            = f.submit "Sign Up", id: "form-submit"
