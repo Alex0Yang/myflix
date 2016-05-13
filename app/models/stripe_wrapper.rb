@@ -43,8 +43,8 @@ module StripeWrapper
       begin
         response = Stripe::Customer.create(
           :source  => options[:source],
-          :plan => options[:plan],
-          :email => options[:email],
+          :plan => "gold",
+          :email => options[:user].email,
           :description => options[:description],
         )
         new(response, :successful)

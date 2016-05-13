@@ -9,8 +9,7 @@ class UserCreation
     if @user.valid?
       charge = StripeWrapper::Customer.create(
         :source  => options[:stripe_token],
-        :email => @user.email,
-        :plan  => "gold",
+        :user => @user,
         :description => "Sign up change for #{@user.email}",
       )
       if charge.successful?

@@ -31,11 +31,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 12 May 2016 23:59:20 GMT
+      - Fri, 13 May 2016 06:49:13 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '781'
+      - '782'
       Connection:
       - keep-alive
       Access-Control-Allow-Credentials:
@@ -49,7 +49,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_8RMRuEFXnzeHtE
+      - req_8RT2ZxzwfDx6MT
       Stripe-Version:
       - '2016-03-07'
       Strict-Transport-Security:
@@ -58,10 +58,10 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "tok_18ATi8EDK3tRuRHOf6IiHW3o",
+          "id": "tok_18Aa6nEDK3tRuRHOl0jfA7E2",
           "object": "token",
           "card": {
-            "id": "card_18ATi8EDK3tRuRHOAwzXkZqY",
+            "id": "card_18Aa6nEDK3tRuRHO1xfTtulj",
             "object": "card",
             "address_city": null,
             "address_country": null,
@@ -84,20 +84,20 @@ http_interactions:
             "name": null,
             "tokenization_method": null
           },
-          "client_ip": "110.52.216.214",
-          "created": 1463097560,
+          "client_ip": "113.240.250.164",
+          "created": 1463122153,
           "livemode": false,
           "type": "card",
           "used": false
         }
     http_version: 
-  recorded_at: Thu, 12 May 2016 23:59:22 GMT
+  recorded_at: Fri, 13 May 2016 06:49:13 GMT
 - request:
     method: post
     uri: https://api.stripe.com/v1/customers
     body:
       encoding: US-ASCII
-      string: description=a+invalid+charge&email=test%40example.com&plan=gold&source=tok_18ATi8EDK3tRuRHOf6IiHW3o
+      string: description=rspec&email=test%40example.com&plan=gold&source=tok_18Aa6nEDK3tRuRHOl0jfA7E2
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
@@ -114,7 +114,7 @@ http_interactions:
         SW-HPA-Long.local 15.4.0 Darwin Kernel Version 15.4.0: Fri Feb 26 22:08:05
         PST 2016; root:xnu-3248.40.184~3/RELEASE_X86_64 x86_64","hostname":"SW-HPA-Long.local"}'
       Content-Length:
-      - '99'
+      - '88'
   response:
     status:
       code: 402
@@ -123,7 +123,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 12 May 2016 23:59:23 GMT
+      - Fri, 13 May 2016 06:49:14 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -141,7 +141,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_8RMREwl5QLWPlB
+      - req_8RT2ney4C06m8r
       Stripe-Version:
       - '2016-03-07'
     body:
@@ -156,5 +156,5 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Thu, 12 May 2016 23:59:25 GMT
+  recorded_at: Fri, 13 May 2016 06:49:15 GMT
 recorded_with: VCR 3.0.1

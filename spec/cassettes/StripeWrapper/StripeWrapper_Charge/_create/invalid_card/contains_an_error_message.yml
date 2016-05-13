@@ -19,8 +19,8 @@ http_interactions:
       - application/x-www-form-urlencoded
       X-Stripe-Client-User-Agent:
       - '{"bindings_version":"1.41.0","lang":"ruby","lang_version":"2.1.2 p95 (2014-05-08)","platform":"x86_64-darwin14.0","engine":"ruby","publisher":"stripe","uname":"Darwin
-        SW-HPA-Long.local 15.3.0 Darwin Kernel Version 15.3.0: Thu Dec 10 18:40:58
-        PST 2015; root:xnu-3248.30.4~1/RELEASE_X86_64 x86_64","hostname":"SW-HPA-Long.local"}'
+        SW-HPA-Long.local 15.4.0 Darwin Kernel Version 15.4.0: Fri Feb 26 22:08:05
+        PST 2016; root:xnu-3248.40.184~3/RELEASE_X86_64 x86_64","hostname":"SW-HPA-Long.local"}'
       Content-Length:
       - '81'
   response:
@@ -31,7 +31,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 29 Apr 2016 08:41:00 GMT
+      - Fri, 13 May 2016 06:48:59 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -49,7 +49,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_8MFgDefqb1RXXA
+      - req_8RT2T3avgVqkEa
       Stripe-Version:
       - '2016-03-07'
       Strict-Transport-Security:
@@ -58,10 +58,10 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "tok_185XBIEDK3tRuRHOoSHBFPT1",
+          "id": "tok_18Aa6ZEDK3tRuRHOXn4W8m8E",
           "object": "token",
           "card": {
-            "id": "card_185XBIEDK3tRuRHOTVKMD1nm",
+            "id": "card_18Aa6ZEDK3tRuRHOG94PuZib",
             "object": "card",
             "address_city": null,
             "address_country": null,
@@ -85,19 +85,19 @@ http_interactions:
             "tokenization_method": null
           },
           "client_ip": "113.240.250.164",
-          "created": 1461919260,
+          "created": 1463122139,
           "livemode": false,
           "type": "card",
           "used": false
         }
     http_version: 
-  recorded_at: Fri, 29 Apr 2016 08:41:00 GMT
+  recorded_at: Fri, 13 May 2016 06:48:59 GMT
 - request:
     method: post
     uri: https://api.stripe.com/v1/charges
     body:
       encoding: US-ASCII
-      string: amount=888&currency=usd&description=rspec&source=tok_185XBIEDK3tRuRHOoSHBFPT1
+      string: amount=888&currency=usd&description=rspec&source=tok_18Aa6ZEDK3tRuRHOXn4W8m8E
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
@@ -111,8 +111,8 @@ http_interactions:
       - application/x-www-form-urlencoded
       X-Stripe-Client-User-Agent:
       - '{"bindings_version":"1.41.0","lang":"ruby","lang_version":"2.1.2 p95 (2014-05-08)","platform":"x86_64-darwin14.0","engine":"ruby","publisher":"stripe","uname":"Darwin
-        SW-HPA-Long.local 15.3.0 Darwin Kernel Version 15.3.0: Thu Dec 10 18:40:58
-        PST 2015; root:xnu-3248.30.4~1/RELEASE_X86_64 x86_64","hostname":"SW-HPA-Long.local"}'
+        SW-HPA-Long.local 15.4.0 Darwin Kernel Version 15.4.0: Fri Feb 26 22:08:05
+        PST 2016; root:xnu-3248.40.184~3/RELEASE_X86_64 x86_64","hostname":"SW-HPA-Long.local"}'
       Content-Length:
       - '77'
   response:
@@ -123,7 +123,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 29 Apr 2016 08:41:02 GMT
+      - Fri, 13 May 2016 06:49:00 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -141,7 +141,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_8MFgvdE2DBRUnf
+      - req_8RT2dAsWmWQeTK
       Stripe-Version:
       - '2016-03-07'
     body:
@@ -152,9 +152,9 @@ http_interactions:
             "message": "Your card was declined.",
             "type": "card_error",
             "code": "card_declined",
-            "charge": "ch_185XBKEDK3tRuRHOktSX6tzp"
+            "charge": "ch_18Aa6aEDK3tRuRHOH6pxVBiP"
           }
         }
     http_version: 
-  recorded_at: Fri, 29 Apr 2016 08:41:02 GMT
+  recorded_at: Fri, 13 May 2016 06:49:00 GMT
 recorded_with: VCR 3.0.1
