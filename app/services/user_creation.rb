@@ -13,6 +13,7 @@ class UserCreation
         :description => "Sign up change for #{@user.email}",
       )
       if charge.successful?
+        @user.stripe_id = charge.stripe_id
         @user.save
         handle_invitation(options[:invite_token])
         UserMailer.delay.welcome_on_register(@user.id)

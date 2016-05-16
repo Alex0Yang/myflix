@@ -23,6 +23,7 @@ gem 'carrierwave-aws'
 gem 'mini_magick'
 gem 'stripe'
 gem 'draper'
+gem 'stripe_event'
 
 group :development do
   gem 'thin'
@@ -31,6 +32,7 @@ group :development do
   gem 'guard'
   gem 'guard-rspec'
   gem 'letter_opener'
+  gem 'ultrahook'
 end
 
 group :development, :test do

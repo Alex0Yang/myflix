@@ -8,7 +8,7 @@ describe UserCreation do
       let!(:user) { Fabricate.build(:user) }
 
       before do
-        charge = double(:charge, successful?: true)
+        charge = double(:charge, successful?: true, stripe_id: "stripe_id")
         StripeWrapper::Customer.should_receive(:create).and_return(charge)
       end
 
@@ -41,6 +41,11 @@ describe UserCreation do
       it "user registers successfully" do
         UserCreation.new(user).signup(stripe_token: "123")
         expect(User.find_by(email: user[:email]).full_name).to eq(user[:full_name])
+      end
+
+      it "store charge id" do
+        UserCreation.new(user).signup(stripe_token: "123")
+        expect(User.find_by(email: user[:email]).stripe_id).to eq("stripe_id")
       end
 
       it "sends out the email with valid inputs" do

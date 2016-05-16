@@ -261,6 +261,9 @@ GEM
       sprockets (~> 2.8)
     stripe (1.41.0)
       rest-client (~> 1.4)
+    stripe_event (1.5.0)
+      activesupport (>= 3.1)
+      stripe (~> 1.6)
     temple (0.7.6)
     thin (1.5.0)
       daemons (>= 1.0.9)
@@ -276,6 +279,8 @@ GEM
       thread_safe (~> 0.1)
     uglifier (2.3.1)
       execjs (>= 0.3.0)
+      json (>= 1.8.0)
+    ultrahook (0.1.4)
       json (>= 1.8.0)
     unf (0.1.4)
       unf_ext
@@ -334,8 +339,10 @@ DEPENDENCIES
   sinatra
   slim
   stripe
+  stripe_event
   thin
   uglifier
+  ultrahook
   unicorn
   vcr
   webmock

@@ -77,14 +77,14 @@ describe StripeWrapper do
           charge.should be_successful
         end
 
-        it "get cumstomer's id" do
+        it "return stripe id", :vcr do
           charge = StripeWrapper::Customer.create(
             user: alice,
             source: valid_token,
             description: "a vaild charge"
           )
 
-          expect(charge.response.id).to be_present
+          expect(charge.stripe_id).to be_present
         end
       end
 

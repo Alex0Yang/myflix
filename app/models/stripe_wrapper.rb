@@ -52,5 +52,9 @@ module StripeWrapper
         new(e, :error)
       end
     end
+
+    def stripe_id
+      response.id
+    end
   end
 end
