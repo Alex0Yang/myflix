@@ -10,7 +10,6 @@ class User < ActiveRecord::Base
   has_many :leading_relationships, class_name: 'Relationship', foreign_key: :leader_id
 
   has_many :invitations
-  has_many :payments
 
   def normalize_position
     queue_items.each_with_index do |queue_item, index|
@@ -42,7 +41,8 @@ class User < ActiveRecord::Base
     ! ( following_relationships.map(&:leader).include?(leader) || self == leader )
   end
 
-  def payment_failure?
-    payments.last.status == "failed"
+  def deactivate!
+    update_column(:active, false)
   end
+
 end

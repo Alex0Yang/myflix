@@ -11,8 +11,8 @@ class SessionsController < ApplicationController
     user = User.find_by email: params[:email]
 
     if user && user.authenticate(params[:password])
-      if user.payment_failure?
-        flash[:danger] = "payment failure"
+      unless user.active?
+        flash[:danger] = "Your account has been suspended, please contact customer service."
         render :new
       else
         session[:user_id] = user.id
