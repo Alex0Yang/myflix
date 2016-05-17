@@ -1,0 +1,79 @@
+{
+  "id": "evt_18BuuFEDK3tRuRHOCHWaeZCH",
+  "object": "event",
+  "api_version": "2016-03-07",
+  "created": 1463440427,
+  "data": {
+    "object": {
+      "id": "ch_18BuuFEDK3tRuRHOl8wxIl6Q",
+      "object": "charge",
+      "amount": 999,
+      "amount_refunded": 0,
+      "application_fee": null,
+      "balance_transaction": null,
+      "captured": false,
+      "created": 1463440427,
+      "currency": "usd",
+      "customer": "cus_8SeRlFDj01A3r9",
+      "description": null,
+      "destination": null,
+      "dispute": null,
+      "failure_code": "card_declined",
+      "failure_message": "Your card was declined.",
+      "fraud_details": {
+      },
+      "invoice": "in_18ButQEDK3tRuRHOwgUERvGZ",
+      "livemode": false,
+      "metadata": {
+      },
+      "order": null,
+      "paid": false,
+      "receipt_email": null,
+      "receipt_number": null,
+      "refunded": false,
+      "refunds": {
+        "object": "list",
+        "data": [
+
+        ],
+        "has_more": false,
+        "total_count": 0,
+        "url": "/v1/charges/ch_18BuuFEDK3tRuRHOl8wxIl6Q/refunds"
+      },
+      "shipping": null,
+      "source": {
+        "id": "card_18BuonEDK3tRuRHOawYyQ3Ke",
+        "object": "card",
+        "address_city": null,
+        "address_country": null,
+        "address_line1": null,
+        "address_line1_check": null,
+        "address_line2": null,
+        "address_state": null,
+        "address_zip": null,
+        "address_zip_check": null,
+        "brand": "Visa",
+        "country": "US",
+        "customer": "cus_8SeRlFDj01A3r9",
+        "cvc_check": "pass",
+        "dynamic_last4": null,
+        "exp_month": 5,
+        "exp_year": 2017,
+        "fingerprint": "3PTIuBvwCsqRG6AQ",
+        "funding": "credit",
+        "last4": "0341",
+        "metadata": {
+        },
+        "name": null,
+        "tokenization_method": null
+      },
+      "source_transfer": null,
+      "statement_descriptor": null,
+      "status": "failed"
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 2,
+  "request": "req_8SqbpIfdNXHggp",
+  "type": "charge.failed"
+}

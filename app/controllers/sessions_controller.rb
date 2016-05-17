@@ -11,9 +11,14 @@ class SessionsController < ApplicationController
     user = User.find_by email: params[:email]
 
     if user && user.authenticate(params[:password])
-      session[:user_id] = user.id
-      flash[:success] = "You are signed in, enjoy!"
-      redirect_to videos_path
+      if user.payment_failure?
+        flash[:danger] = "payment failure"
+        render :new
+      else
+        session[:user_id] = user.id
+        flash[:success] = "You are signed in, enjoy!"
+        redirect_to videos_path
+      end
     else
       flash.now[:danger] = "Incorrect email or password, Please try again"
       render :new
