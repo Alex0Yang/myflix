@@ -40,4 +40,6 @@ Myflix::Application.routes.draw do
 
   mount StripeEvent::Engine, at: '/stripe-hook'
 
+  get "/advanced_search", to: "search#index"
+  post "/advanced_search", to: "search#search"
 end
