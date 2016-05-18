@@ -29,24 +29,25 @@ class Video < ActiveRecord::Base
   def self.search(query, options={})
     fields = ["title^100", "description^50"]
     fields << "comments.content" if options[:comments].present?
-    filter = { range: { rating: {} }}
-    filter[:range][:rating].merge!({gte: options[:rating_from]}) if options[:rating_from]
-    filter[:range][:rating].merge!({lt: options[:rating_to]}) if options[:rating_to]
     search_term = {
-        query: {
-          filtered:{
-            query: {
-              multi_match: {
-                query: query,
-                operator: "and",
-                fields: fields
-              }
-            }
-          }
-        }
+      query: {
+        multi_match: {
+          query: query,
+          operator: "and",
+          fields: fields }
+      }
     }
 
-    search_term[:query][:filtered].merge!({filter: filter}) if options[:rating_to] || options[:rating_from]
+    if options[:rating_to].present? || options[:rating_from].present?
+      search_term[:filter] = {
+        range: {
+          rating: {
+            gte: (options[:rating_from] if options[:rating_from].present?),
+            lte: (options[:rating_to] if options[:rating_to].present?)
+          }
+        }
+      }
+    end
 
     __elasticsearch__.search(search_term)
   end
