@@ -13,12 +13,12 @@
             Include Reviews
     .form-group
       .row.average_rating_label Average Rating
-      %label.col-sm-1.control-label(for="rating_from") From:
+      = label_tag :rating_from, "From:", class: "col-sm-1 control-label"
       .col-sm-2
-        = select_tag "rating_from", options_for_select( (10..50).map{ |num| [num / 10.0] * 2}.insert(0, ["-",nil])), class: "form-control"
-      %label.col-sm-1.control-label(for="rating_to") To:
+        = select_tag "rating_from", options_for_select( (10..50).map{ |num| num / 10.0} ), prompt: "-", class: "form-control"
+      = label_tag :rating_from, "To:", class: "col-sm-1 control-label"
       .col-sm-2
-        = select_tag "rating_to", options_for_select( (10..50).map{ |num| [num / 10.0] * 2}.insert(0, ["-",nil])), class: "form-control"
+        = select_tag "rating_to", options_for_select( (10..50).map{ |num| num / 10.0} ), prompt: "-", class: "form-control"
     .form-group
       .col-sm-6
         = button_tag(type= "submit", class: "btn btn-primary") do
