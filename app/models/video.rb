@@ -28,7 +28,7 @@ class Video < ActiveRecord::Base
 
   def self.search(query, options={})
     fields = ["title^100", "description^50"]
-    fields << "comments.content" if options[:comments].present?
+    fields << "comments.content" if query || options[:comments].present?
     search_term = {
       query: {
         multi_match: {
