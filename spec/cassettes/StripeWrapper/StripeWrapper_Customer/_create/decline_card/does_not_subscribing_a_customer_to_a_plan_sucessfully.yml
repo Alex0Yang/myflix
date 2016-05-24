@@ -5,7 +5,7 @@ http_interactions:
     uri: https://api.stripe.com/v1/tokens
     body:
       encoding: US-ASCII
-      string: card[cvc]=314&card[exp_month]=9&card[exp_year]=2017&card[number]=4242424242424242
+      string: card[cvc]=314&card[exp_month]=9&card[exp_year]=2017&card[number]=4000000000000002
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
@@ -19,8 +19,8 @@ http_interactions:
       - application/x-www-form-urlencoded
       X-Stripe-Client-User-Agent:
       - '{"bindings_version":"1.41.0","lang":"ruby","lang_version":"2.1.2 p95 (2014-05-08)","platform":"x86_64-darwin14.0","engine":"ruby","publisher":"stripe","uname":"Darwin
-        SW-HPA-Long.local 15.3.0 Darwin Kernel Version 15.3.0: Thu Dec 10 18:40:58
-        PST 2015; root:xnu-3248.30.4~1/RELEASE_X86_64 x86_64","hostname":"SW-HPA-Long.local"}'
+        SW-HPA-Long.local 15.4.0 Darwin Kernel Version 15.4.0: Fri Feb 26 22:08:05
+        PST 2016; root:xnu-3248.40.184~3/RELEASE_X86_64 x86_64","hostname":"SW-HPA-Long.local"}'
       Content-Length:
       - '81'
   response:
@@ -31,7 +31,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 29 Apr 2016 08:41:12 GMT
+      - Fri, 13 May 2016 06:49:09 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -49,7 +49,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_8MFgeHf0f45XXk
+      - req_8RT2BmxA0rPX54
       Stripe-Version:
       - '2016-03-07'
       Strict-Transport-Security:
@@ -58,10 +58,10 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "tok_185XBUEDK3tRuRHOTIOODjFb",
+          "id": "tok_18Aa6jEDK3tRuRHObLbpn3Qy",
           "object": "token",
           "card": {
-            "id": "card_185XBUEDK3tRuRHOu4MScvj3",
+            "id": "card_18Aa6jEDK3tRuRHO1ejq3Wo3",
             "object": "card",
             "address_city": null,
             "address_country": null,
@@ -77,27 +77,27 @@ http_interactions:
             "dynamic_last4": null,
             "exp_month": 9,
             "exp_year": 2017,
-            "fingerprint": "njjpAQzzTJCl3yl9",
+            "fingerprint": "uMcA7FiK0lDTOQny",
             "funding": "credit",
-            "last4": "4242",
+            "last4": "0002",
             "metadata": {},
             "name": null,
             "tokenization_method": null
           },
           "client_ip": "113.240.250.164",
-          "created": 1461919272,
+          "created": 1463122149,
           "livemode": false,
           "type": "card",
           "used": false
         }
     http_version: 
-  recorded_at: Fri, 29 Apr 2016 08:41:13 GMT
+  recorded_at: Fri, 13 May 2016 06:49:09 GMT
 - request:
     method: post
-    uri: https://api.stripe.com/v1/charges
+    uri: https://api.stripe.com/v1/customers
     body:
       encoding: US-ASCII
-      string: amount=888&currency=usd&description=rspec&source=tok_185XBUEDK3tRuRHOTIOODjFb
+      string: description=a+invalid+charge&email=test%40example.com&plan=gold&source=tok_18Aa6jEDK3tRuRHObLbpn3Qy
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
@@ -111,23 +111,23 @@ http_interactions:
       - application/x-www-form-urlencoded
       X-Stripe-Client-User-Agent:
       - '{"bindings_version":"1.41.0","lang":"ruby","lang_version":"2.1.2 p95 (2014-05-08)","platform":"x86_64-darwin14.0","engine":"ruby","publisher":"stripe","uname":"Darwin
-        SW-HPA-Long.local 15.3.0 Darwin Kernel Version 15.3.0: Thu Dec 10 18:40:58
-        PST 2015; root:xnu-3248.30.4~1/RELEASE_X86_64 x86_64","hostname":"SW-HPA-Long.local"}'
+        SW-HPA-Long.local 15.4.0 Darwin Kernel Version 15.4.0: Fri Feb 26 22:08:05
+        PST 2016; root:xnu-3248.40.184~3/RELEASE_X86_64 x86_64","hostname":"SW-HPA-Long.local"}'
       Content-Length:
-      - '77'
+      - '99'
   response:
     status:
-      code: 200
-      message: OK
+      code: 402
+      message: Payment Required
     headers:
       Server:
       - nginx
       Date:
-      - Fri, 29 Apr 2016 08:41:25 GMT
+      - Fri, 13 May 2016 06:49:11 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '1470'
+      - '134'
       Connection:
       - keep-alive
       Access-Control-Allow-Credentials:
@@ -141,76 +141,20 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_8MFhadosYCHWRO
+      - req_8RT25gpgEuHycI
       Stripe-Version:
       - '2016-03-07'
-      Strict-Transport-Security:
-      - max-age=31556926; includeSubDomains
     body:
       encoding: UTF-8
       string: |
         {
-          "id": "ch_185XBgEDK3tRuRHOJWeSLa9Y",
-          "object": "charge",
-          "amount": 888,
-          "amount_refunded": 0,
-          "application_fee": null,
-          "balance_transaction": "txn_185XBgEDK3tRuRHOEduQeXQk",
-          "captured": true,
-          "created": 1461919284,
-          "currency": "usd",
-          "customer": null,
-          "description": "rspec",
-          "destination": null,
-          "dispute": null,
-          "failure_code": null,
-          "failure_message": null,
-          "fraud_details": {},
-          "invoice": null,
-          "livemode": false,
-          "metadata": {},
-          "order": null,
-          "paid": true,
-          "receipt_email": null,
-          "receipt_number": null,
-          "refunded": false,
-          "refunds": {
-            "object": "list",
-            "data": [],
-            "has_more": false,
-            "total_count": 0,
-            "url": "/v1/charges/ch_185XBgEDK3tRuRHOJWeSLa9Y/refunds"
-          },
-          "shipping": null,
-          "source": {
-            "id": "card_185XBUEDK3tRuRHOu4MScvj3",
-            "object": "card",
-            "address_city": null,
-            "address_country": null,
-            "address_line1": null,
-            "address_line1_check": null,
-            "address_line2": null,
-            "address_state": null,
-            "address_zip": null,
-            "address_zip_check": null,
-            "brand": "Visa",
-            "country": "US",
-            "customer": null,
-            "cvc_check": "pass",
-            "dynamic_last4": null,
-            "exp_month": 9,
-            "exp_year": 2017,
-            "fingerprint": "njjpAQzzTJCl3yl9",
-            "funding": "credit",
-            "last4": "4242",
-            "metadata": {},
-            "name": null,
-            "tokenization_method": null
-          },
-          "source_transfer": null,
-          "statement_descriptor": null,
-          "status": "succeeded"
+          "error": {
+            "message": "Your card was declined.",
+            "type": "card_error",
+            "param": "",
+            "code": "card_declined"
+          }
         }
     http_version: 
-  recorded_at: Fri, 29 Apr 2016 08:41:25 GMT
+  recorded_at: Fri, 13 May 2016 06:49:12 GMT
 recorded_with: VCR 3.0.1

@@ -8,8 +8,8 @@ describe UserCreation do
       let!(:user) { Fabricate.build(:user) }
 
       before do
-        charge = double(:charge, successful?: true)
-        StripeWrapper::Charge.should_receive(:create).and_return(charge)
+        charge = double(:charge, successful?: true, stripe_id: "stripe_id")
+        StripeWrapper::Customer.should_receive(:create).and_return(charge)
       end
 
       it "delete the invited token" do
@@ -43,6 +43,11 @@ describe UserCreation do
         expect(User.find_by(email: user[:email]).full_name).to eq(user[:full_name])
       end
 
+      it "store charge id" do
+        UserCreation.new(user).signup(stripe_token: "123")
+        expect(User.find_by(email: user[:email]).stripe_id).to eq("stripe_id")
+      end
+
       it "sends out the email with valid inputs" do
         UserCreation.new(user).signup(stripe_token: "123")
         expect(ActionMailer::Base.deliveries.last.to).to eq([user[:email]])
@@ -60,14 +65,14 @@ describe UserCreation do
 
       it "does not create a new user record" do
         charge = double(:charge, successful?: false, error_message: "This card is declined.")
-        StripeWrapper::Charge.should_receive(:create).and_return(charge)
+        StripeWrapper::Customer.should_receive(:create).and_return(charge)
         UserCreation.new(user).signup(stripe_token: "123")
         expect(User.count).to eq(0)
       end
 
       it "does not send out email with declined credit card" do
         charge = double(:charge, successful?: false, error_message: "This card is declined.")
-        StripeWrapper::Charge.should_receive(:create).and_return(charge)
+        StripeWrapper::Customer.should_receive(:create).and_return(charge)
         UserCreation.new(user).signup(stripe_token: "123")
         expect(ActionMailer::Base.deliveries).to be_empty
       end
@@ -81,7 +86,7 @@ describe UserCreation do
       end
 
       it "does not charge the card" do
-        StripeWrapper::Charge.should_not_receive(:create)
+        StripeWrapper::Customer.should_not_receive(:create)
         UserCreation.new(User.new(email: "test@test.com")).signup(stripe_token: "123")
       end
 

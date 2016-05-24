@@ -7,12 +7,13 @@ class UserCreation
 
   def signup(options)
     if @user.valid?
-      charge = StripeWrapper::Charge.create(
+      charge = StripeWrapper::Customer.create(
         :source  => options[:stripe_token],
-        :amount      => 99,
+        :user => @user,
         :description => "Sign up change for #{@user.email}",
       )
       if charge.successful?
+        @user.stripe_id = charge.stripe_id
         @user.save
         handle_invitation(options[:invite_token])
         UserMailer.delay.welcome_on_register(@user.id)

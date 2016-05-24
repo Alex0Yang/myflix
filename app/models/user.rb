@@ -40,4 +40,9 @@ class User < ActiveRecord::Base
   def can_follow?(leader)
     ! ( following_relationships.map(&:leader).include?(leader) || self == leader )
   end
+
+  def deactivate!
+    update_column(:active, false)
+  end
+
 end

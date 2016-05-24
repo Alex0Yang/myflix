@@ -11,6 +11,7 @@ feature "User registers", { js: true, vcr: true } do
     click_button "Sign Up"
     expect(page).to have_content "Sign in", wait: 20
     expect(page).to have_content "Thank you for registering with MyFLix. Please sign in now."
+    clear_emails
   end
 
   scenario "user register with valid input and declined credit card" do

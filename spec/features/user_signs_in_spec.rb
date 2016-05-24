@@ -14,4 +14,11 @@ feature "Sign in" do
     click_button "Sign in"
     expect(page).to have_content 'Incorrect'
   end
+
+  scenario "user cannot sign in if unacitve" do
+    alice = Fabricate(:user, active: false)
+    sign_in(alice)
+    page.should_not have_content(alice.full_name)
+    page.should have_content("Your account has been suspended, please contact customer service.")
+  end
 end

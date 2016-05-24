@@ -20,3 +20,5 @@ config/app.yml
 
 # Ignore uploads
 public/uploads
+
+spec/cassettes
